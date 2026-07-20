@@ -1,0 +1,14 @@
+global:
+  scrape_interval: 15s     # Alle 15 Sekunden werden Metriken abgerufen
+  evaluation_interval: 15s # Regel-Auswertung alle 15 Sekunden
+
+scrape_configs:
+  # Job 1: Prometheus überwacht sich selbst
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Job 2: Metriken vom Host-System über den Node-Exporter
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
