@@ -22,4 +22,5 @@ jobs:
       - name: Validate Prometheus Config (Promtool)
         uses: docker://prom/prometheus:v2.51.0
         with:
+          entrypoint: /bin/promtool
           args: check config /github/workspace/prometheus/prometheus.yml
