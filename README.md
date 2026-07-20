@@ -24,6 +24,9 @@ Das Monitoring nutzt das **Pull-Prinzip**:
 | (Query / PromQL)
 [ Grafana ] (Port 3000)
 
+
+![Grafana Dashboard](img/dashboard.png)
+
 ---
 
 ## ✨ Features & Standards
