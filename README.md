@@ -79,5 +79,61 @@ Die Pipeline stellt sicher, dass fehlerhafte Konfigurationen gar nicht erst auf 
 Push -> Actions Triggered -> Yamllint -> Promtool Config Check -> Green Build 🟢
 ```
 
+---
+
+## 🧪 Installation & Schnelltest (Quickstart)
+
+In nur 3 Schritten ist der gesamte Monitoring-Stack einsatzbereit und testbar:
+
+### 1. Repository klonen & Umgebung einrichten
+```bash
+git clone [https://github.com/DEIN_GITHUB_NAME/linux-monitoring-stack.git](https://github.com/DEIN_GITHUB_NAME/linux-monitoring-stack.git)
+cd linux-monitoring-stack
+cp .env.example .env
+```
+
+### 2. Stack starten
+```bash
+docker compose up -d
+```
+Prüfe den Status der Container:
+```bash
+docker ps
+```
+(Alle 3 Container prometheus, node-exporter und grafana sollten den Status Up anzeigen.)
+
+
+## 🔍 Den Monitoring-Stack testen
+### A. Grafana Dashboard aufrufen
+1.  Öffne im Browser: `http://localhost:3000`
+2. Melde dich mit den Zugangsdaten aus deiner `.env`-Datei an (Standard: `admin` / `SicheresPasswort123!`).
+3. Unter Dashboards findest du das importierte Node Exporter Full Dashboard mit Live-Metriken deines Systems.
+
+### B. Prometheus Targets & Endpunkte prüfen
+- Prometheus UI: `http://localhost:9090`
+(Unter `Status` -> `Targets` siehst du, dass beide Jobs `prometheus` und `node-exporter` den Status UP haben.)
+- Node Exporter Rohe Metriken: `http://localhost:9100/metrics`
+(Hier stellt der Node Exporter die rohen Hardware-Kennzahlen für Prometheus bereit.)
+
+### C. Live-Stresstest durchführen (optional)
+Um zu sehen, wie die Grafiken in Grafana in Echtzeit reagieren, kannst du die CPU der VM kurz belasten:
+```bash
+# Erzeugt für 30 Sekunden CPU-Last
+stress-ng --cpu 2 --timeout 30s
+# Alternativ (falls stress-ng nicht installiert ist):
+dd if=/dev/zero of=/dev/null bs=1M count=100000
+```
+👉 Beobachte in Grafana, wie der CPU Usage Graph sofort nach oben ausschlägt! WOW!!!
+
+
+## 🧹 Aufräumen / Stoppen
+Um den Stack zu stoppen und die Volumes sauber zu entfernen:
+```bash
+docker compose down -v
+```
+
 ## 👤 Autor
 Entwickelt als praxiserprobtes Projekt im Bereich Systemadministration & DevOps.
+
+## 💬 Persönlichen Worte
+Dieses Projekt dient lediglich dazu, dass ich in die Welt des Systemadministrators eintauchen. Dieser Bereich gefällt mir sehr und zeigt auch als Entwickler wie interessant diese Welt sein kann. Es werden natürlich weitere Projekte kommen auch als Systemadministrator, auch größere und natürlich als Programmierer. Vielleicht sogar ein Projekt indem ich einen KI-Agenten entwickle, der ein paar Aufgaben als Systemadministrator automatisiert?
