@@ -1,6 +1,6 @@
 global:
-  scrape_interval: 15s     # Alle 15 Sekunden werden Metriken abgerufen
-  evaluation_interval: 15s # Regel-Auswertung alle 15 Sekunden
+  scrape_interval: 15s  # Alle 15 Sekunden werden Metriken abgerufen
+  evaluation_interval: 15s  # Regel-Auswertung alle 15 Sekunden
 
 scrape_configs:
   # Job 1: Prometheus überwacht sich selbst
