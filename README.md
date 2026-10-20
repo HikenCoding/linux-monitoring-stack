@@ -137,3 +137,22 @@ Entwickelt als praxiserprobtes Projekt im Bereich Systemadministration & DevOps.
 
 ## 💬 Persönlichen Worte
 Dieses Projekt dient lediglich dazu, dass ich in die Welt des Systemadministrators eintauchen. Dieser Bereich gefällt mir sehr und zeigt auch als Entwickler wie interessant diese Welt sein kann. Es werden natürlich weitere Projekte kommen auch als Systemadministrator, auch größere und natürlich als Programmierer. Vielleicht sogar ein Projekt indem ich einen KI-Agenten entwickle, der ein paar Aufgaben als Systemadministrator automatisiert?
+
+## ✒️ Zusammenfassung des Projektes in eigenen Worten
+Architektur & Datenfluss: Pull-Prinzip
+- **Node Exporter:** liest Daten vom CPU, RAM, Festplatte oder Netzwerk aus dem virtuellen Kernel-Dateisystem `/proc` und `/sys` und erstellt diese plain text auf Port 9100/metrics bereit.
+- **Prometheus:** Dient als zentrale Teitreihendatenbank (TSDB). Pollt den Node Exporter in einem festen Intervall (hier sind es alle 15 Sekunden) über das HTTP und speichert die Daten ab.
+- **Grafana:** Holt sich die Daten mit PromQL aus Prometheus und zeigt diese auf interatkiven Dashbooards an
+
+###❔Was genau ist den das Pull-Prinzip?
+Lassen wir uns das mit einem reelem Beispeil erklären. Nehmen wir Whatsapp als Beispiel- Du wartest auf eine Whatsapp-Nachricht. Hier gibt es zwei Prinzipien:
+- Push-Prinzip: Freund schickt Nachricht, es kommt an du machst nichts und dein Handy klingelt.
+- Pull-Prinzip: Freund schickt dir nichts. DU gehst alle 15 Minuten und fragst "Gib mir mal den neuesten Stand!"
+
+Und was hat das bei uns im Projekt damit zu tun?
+Du kannst dir das wirklich jetzt als transfer übertragen auf unser Projekt:
+- **Prometheus(Der Frager):** Hat die Rolle eines Kontrolleurs und fragt alle 15 Sekunden zum Server (Node Exporter) und holt sich die aktuellen Leistungsdaten ab.
+- **Node Exporter (Der Informant):** Läuft im Hintergrund auf dem Server und Sammelt permanent die Daten (CPU, RAM) Schickt die Daten NICHT von sich aus los. Wartet friedlich bis Prometheus anklopft und sagt "Gib mir deine aktuellen Daten"
+
+Warum macht man das den so?
+Zum eine für eine volle Kontrolle. Prometheus entscheidet wann und wie oft Daten abgeholt werden. Ist Prometheus überlastet holt er sich seltener die Daten. Server wird dadurch nicht belastet und zugespammt. Des Weiteren für eine einfache Fehlersuche. Fällt ein Server aus, merkt Prometheus das sofort, weil ja alle 15 Sekunden eine Abfrage stattfindet und wenn mal keine Antwort kommt, ist der Fehler klar. Und zu guter letzt natürlich für die Sicherheit. Der Server muss keine offenen Kanäle haben um die Daten ins Internet zu pushen. Er wartet passiv auf Anfragen
